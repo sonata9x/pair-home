@@ -1,0 +1,86 @@
+name: Manual FTP deploy
+run-name: "FTP ${{ inputs.mode }} from ${{ github.ref_name }}"
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "preview는 변경 목록만 확인하고, deploy는 실제로 업로드합니다."
+        required: true
+        type: choice
+        default: preview
+        options:
+          - preview
+          - deploy
+      protocol:
+        description: "FileZilla에서 사용하는 FTP 연결 방식"
+        required: true
+        type: choice
+        default: ftp
+        options:
+          - ftps
+          - ftp
+          - ftps-legacy
+      port:
+        description: "FTP 포트"
+        required: true
+        type: string
+        default: "21"
+      server_dir:
+        description: "서버 업로드 폴더. 반드시 /로 끝나야 합니다. 예: public_html/"
+        required: true
+        type: string
+        default: "/html/"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-ftp-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: ${{ inputs.mode == 'deploy' && 'Upload files' || 'Preview file changes' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out selected branch
+        uses: actions/checkout@v6
+
+      - name: Validate deployment settings
+        shell: bash
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          SERVER_DIR: ${{ inputs.server_dir }}
+        run: |
+          if [[ -z "$FTP_SERVER" || -z "$FTP_USERNAME" || -z "$FTP_PASSWORD" ]]; then
+            echo "::error::FTP_SERVER, FTP_USERNAME, FTP_PASSWORD repository secrets are required."
+            exit 1
+          fi
+
+          if [[ -z "$SERVER_DIR" || "$SERVER_DIR" != */ ]]; then
+            echo "::error::server_dir is required and must end with /."
+            exit 1
+          fi
+
+      - name: Preview or upload files
+        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ${{ inputs.protocol }}
+          port: ${{ inputs.port }}
+          server-dir: ${{ inputs.server_dir }}
+          dry-run: ${{ inputs.mode != 'deploy' }}
+          log-level: standard
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/node_modules/**
+            data/**
+            **/data/**

@@ -1,0 +1,83 @@
+/* RA0 Edition - Latest Skin: Diary (다이어리 카드 스타일) */
+.diary-latest {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.diary-latest .latest-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.diary-latest .header-icon {
+    color: var(--accent-color, #ffd700);
+    font-size: 14px;
+}
+
+.diary-latest .latest-title {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--title-font-family);
+    color: var(--accent-color);
+    text-transform: uppercase;
+}
+
+.diary-latest .main-post {
+    display: block;
+    text-decoration: none;
+    flex: 1;
+    transition: opacity 0.2s;
+}
+
+.diary-latest .main-post:hover {
+    opacity: 0.8;
+}
+
+.diary-latest .post-title {
+    font-size: calc(var(--content-font-size) * 1.3);
+    font-weight: 600;
+    color: var(--content-font-color);
+    line-height: 1.4;
+}
+
+.diary-latest .post-content {
+    font-size: var(--content-font-size);
+    color: rgb(from var(--content-font-color) r g b / 70%);
+    line-height: 1.6;
+}
+
+.diary-latest .post-meta {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.diary-latest .post-date {
+    font-size: calc(var(--content-font-size) * 0.8);
+    color: rgb(from var(--content-font-color) r g b / 50%);
+    font-family: var(--title-font-family, monospace);
+}
+
+.diary-latest .latest-empty {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--text-muted, #666);
+}
+
+.diary-latest .latest-empty i {
+    font-size: 24px;
+    opacity: 0.5;
+}
+
+.diary-latest .latest-empty span {
+    font-size: 13px;
+}

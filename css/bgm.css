@@ -1,0 +1,464 @@
+/* BGM Player Styles */
+.bgm-player {
+    position: fixed;
+    bottom: var(--spacing-lg);
+    right: var(--spacing-lg);
+    width: 280px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--bg-glass-dark);
+    border-radius: var(--container-border-radius);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-glass);
+    z-index: 9999;
+    font-family: var(--f-pre);
+    transition: all var(--transition-base);
+    transform: translateY(100px);
+    opacity: 0;
+    pointer-events: auto; /* iframe 내부에서도 클릭 가능 */
+}
+
+.bgm-player.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* 최소화 상태 */
+.bgm-player.minimized {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: var(--spacing-sm);
+    cursor: pointer;
+    background: var(--bg-glass);
+    border: 1px solid var(--bg-glass-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+}
+
+.bgm-player.minimized:hover {
+    transform: scale(1.05);
+    box-shadow: var(--shadow-lg);
+}
+
+.bgm-player.minimized .player-content {
+    display: none;
+}
+
+.bgm-player.minimized::before {
+    content: '♪';
+    font-size: 1.25rem;
+    color: var(--content-font-color);
+}
+
+/* 최소화 상태에서 클릭 가능한 오버레이 */
+.minimized-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    display: none;
+}
+
+.bgm-player.minimized .minimized-overlay {
+    display: block;
+}
+
+/* 노래 제목 + 토글 버튼 헤더 */
+.track-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-sm);
+}
+
+.track-info {
+    color: var(--content-font-color);
+    font-size: 12px;
+    font-weight: 400;
+    font-family: var(--f-pre);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    line-height: 1.4;
+}
+
+.list-toggle-btn {
+    background: var(--bg-secondary);
+    border: 1px solid var(--bg-glass-dark);
+    color: var(--text-secondary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--btn-primary-radius);
+    cursor: pointer;
+    font-size: 11px;
+    font-family: var(--f-pre);
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xxs);
+    min-width: 20px;
+    justify-content: center;
+}
+
+.list-toggle-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.list-toggle-btn.active {
+    background: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+
+.toggle-icon {
+    transition: transform var(--transition-fast);
+    font-size: 10px;
+}
+
+.list-toggle-btn.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* 플레이리스트 컨테이너 */
+.playlist-container {
+    max-height: 160px;
+    overflow-y: auto;
+    margin-top: var(--spacing-md);
+    border-radius: var(--card-border-radius);
+    background: var(--bg-glass-dark);
+    border: 1px solid var(--bg-glass-dark);
+}
+
+.playlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.playlist li {
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-family: var(--f-pre);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.playlist li:last-child {
+    border-bottom: none;
+}
+
+.playlist li:hover {
+    background: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.playlist li.current {
+    background: var(--primary-color);
+    color: var(--white);
+    font-weight: 500;
+}
+
+/* 플레이어 컨트롤 */
+.player-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.bgm-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-right: var(--spacing-sm);
+}
+
+.control-btn {
+    background: transparent;
+    border: none;
+    color: rgb(from var(--primary-color) r g b / 60%);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+}
+
+.control-btn:hover:not(:disabled) {
+    color: rgb(from var(--white) r g b / 30%);
+    transform: translateY(-2px);
+}
+
+.control-btn.play-pause {
+    background: transparent;
+    color: var(--accent-color);
+    border: none;
+    font-size: 16px;
+}
+
+.control-btn.play-pause:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+.control-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.control-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* 모드 컨트롤 (셔플/반복) */
+.mode-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.control-btn.mode-btn {
+    font-size: 12px;
+    opacity: 0.5;
+    position: relative;
+}
+
+.control-btn.mode-btn:hover {
+    opacity: 0.8;
+}
+
+.control-btn.mode-btn.active {
+    opacity: 1;
+    color: var(--accent-color);
+}
+
+/* 1곡 반복 배지 */
+.repeat-one-badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--accent-color);
+    line-height: 1;
+}
+
+/* 볼륨 컨트롤 */
+.volume-control {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.volume-btn {
+    font-size: 14px;
+}
+
+.volume-btn.muted i::before {
+    content: "\f6a9"; /* fa-volume-xmark */
+}
+
+.volume-popup {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--bg-glass-dark);
+    border-radius: var(--card-border-radius);
+    padding: var(--spacing-md) var(--spacing-sm);
+    box-shadow: var(--shadow-lg);
+    display: none;
+    margin-bottom: var(--spacing-sm);
+}
+
+.volume-popup.show {
+    display: block;
+}
+
+.volume-slider {
+    width: 4px;
+    height: 80px;
+    background: var(--border-medium);
+    border-radius: 2px;
+    outline: none;
+    -webkit-appearance: slider-vertical;
+    appearance: slider-vertical;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    writing-mode: vertical-lr;
+    direction: rtl;
+}
+
+.volume-slider:hover {
+    background: var(--primary-light);
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--white);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: var(--shadow-md);
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+/* 최소화 버튼 */
+.minimize-btn {
+    position: absolute;
+    top: calc(var(--spacing-sm) * 0.8);
+    right: calc(var(--spacing-sm) * 0.8);
+    /* background: rgb(from var(--accent-color) r g b / 70%); */
+    background: transparent;
+    background: var(--accent-color);
+    /* border: 1px solid var(--bg-glass-dark); */
+    border: none;
+    color: var(--white);
+    font-size: 12px;
+    cursor: pointer;
+    padding: 0;
+    border-radius: var(--btn-primary-radius);
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--f-pre);
+}
+
+.minimize-btn:hover {
+    background: var(--primary-color);
+    transform: scale(1.1);
+}
+
+/* 스크롤바 스타일 */
+.playlist-container::-webkit-scrollbar {
+    width: 4px;
+}
+
+.playlist-container::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 2px;
+}
+
+.playlist-container::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 2px;
+    transition: all var(--transition-fast);
+}
+
+.playlist-container::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* 애니메이션 */
+@keyframes slideInUp {
+    from { 
+        transform: translateY(100px); 
+        opacity: 0; 
+    }
+    to { 
+        transform: translateY(0); 
+        opacity: 1; 
+    }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.bgm-player.minimized:hover {
+    animation: pulse 0.6s ease infinite;
+}
+
+/* 로딩 상태 */
+.track-info.loading::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: var(--spacing-xs);
+    border: 2px solid var(--border-light);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { 
+        transform: rotate(360deg); 
+    }
+}
+
+/* 포커스 상태 */
+.control-btn:focus,
+.list-toggle-btn:focus,
+.minimize-btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.volume-slider:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* 접근성 개선 */
+@media (prefers-reduced-motion: reduce) {
+    .bgm-player,
+    .control-btn,
+    .list-toggle-btn,
+    .minimize-btn,
+    .volume-slider::-webkit-slider-thumb,
+    .toggle-icon {
+        transition: none;
+    }
+    
+    .bgm-player.minimized:hover {
+        animation: none;
+    }
+}
+
+/* 고해상도 디스플레이 대응 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .bgm-player {
+        backdrop-filter: blur(20px);
+    }
+}

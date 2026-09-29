@@ -1,0 +1,32 @@
+@charset "utf-8";
+
+/* =============================== */
+/* 코코포리아	*/
+/* =============================== */
+
+#cclog_ccf .ccl_inWrap {font-size: 15px; letter-spacing: -.5px; color: #ffffff;}
+
+#cclog_ccf .ccl_inWrap .ccl_tab {width: 100%; background: #27262C; position: relative;}
+#cclog_ccf .ccl_inWrap .ccl_tab.ccl_main:before {background: none;}
+#cclog_ccf .ccl_inWrap .ccl_tab.ccl_main{background: #1f1e22;}
+#cclog_ccf .ccl_inWrap .ccl_tabtitle {display: none;}
+#cclog_ccf .ccl_inWrap .ccl_player {display: flex; overflow: hidden; padding: 20px 0px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.08)}
+#cclog_ccf .ccl_inWrap .ccl_infoWrap .ccl_imgWrap {overflow: hidden; width: 40px; height: 40px; background-color: rgba(0, 0, 0, 0.31); float: left; border-radius: 5px; }
+#cclog_ccf .ccl_inWrap .ccl_infoWrap .ccl_imgWrap img {width: 40px; height: auto;}
+#cclog_ccf .ccl_inWrap .ccl_infoWrap .ccl_imgWrap:not(:has(img)) {opacity: 0;}
+#cclog_ccf .ccl_inWrap .ccl_textWrap {float: left; line-height: 1.6; margin-left: 20px; margin-right: 20px;}
+#cclog_ccf .ccl_inWrap .ccl_textWrap .ccl_Uname {margin: 0; font-weight: 800;}
+#cclog_ccf .ccl_inWrap .ccl_textWrap .ccl_Utext {margin: 0; font-weight: 400; color: #59595D}
+#cclog_ccf .ccl_inWrap .ccl_tab.ccl_main .ccl_textWrap .ccl_Utext {color: #ffffff;}
+
+#cclog_ccf .ccl_inWrap .ccl_player.system {padding: 0px; border-color: #313033 !important; background: #33313B; text-align: center; justify-content: center}
+#cclog_ccf .ccl_inWrap .ccl_player.system .ccl_infoWrap {display: none;}
+#cclog_ccf .ccl_inWrap .ccl_player.system .ccl_textWrap {margin-left: 0; padding: 10px 20px}
+#cclog_ccf .ccl_inWrap .ccl_player.system .ccl_textWrap .ccl_Uname {color: #858296; font-size:0.86em; letter-spacing: 1px; padding: 3px 8px; border-radius: 15px; background: #000000}
+#cclog_ccf .ccl_inWrap .ccl_player.system .ccl_textWrap .ccl_Utext {margin-top: 5px; color: #908E9A; letter-spacing: -1px}
+
+#cclog_ccf .ccl_inWrap .ccl_main .ccl_player.narrator {padding: 0px; text-align: center; justify-content: center;}
+#cclog_ccf .ccl_inWrap .ccl_main .ccl_player.narrator .ccl_infoWrap {display: none;}
+#cclog_ccf .ccl_inWrap .ccl_main .ccl_player.narrator .ccl_textWrap {margin-left: 0; padding: 10px 20px}
+#cclog_ccf .ccl_inWrap .ccl_main .ccl_player.narrator .ccl_textWrap .ccl_Uname {display: none;}
+#cclog_ccf .ccl_inWrap .ccl_main .ccl_player.narrator .ccl_textWrap .ccl_Utext {margin-top: 5px; letter-spacing: -1px}

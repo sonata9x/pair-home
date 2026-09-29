@@ -1,0 +1,14 @@
+@charset "utf-8";
+
+/* 현재접속자 */
+#current_connect {}
+#current_connect ul {margin:0;padding:0}
+#current_connect li {list-style:none;margin:0;padding:5px 10px;border-bottom:1px solid #f0f0f0;overflow:hidden;zoom:1}
+#current_connect li:hover {background:#f9f9f9}
+#current_connect li.empty_li {text-align:center;color:#999}
+#current_connect .crt_num {float:left;width:30px;text-align:center;color:#666;font-size:0.9em}
+#current_connect .crt_profile {float:left;width:20px;margin-right:5px}
+#current_connect .crt_profile img {width:16px;height:16px}
+#current_connect .crt_info {overflow:hidden;zoom:1}
+#current_connect .crt_name {display:block;font-weight:bold;color:#333}
+#current_connect .crt_lct {display:block;font-size:0.8em;color:#666;margin-top:2px}
