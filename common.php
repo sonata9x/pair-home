@@ -46,6 +46,28 @@ function g5_path()
     if(isset($_SERVER['HTTP_HOST']) && preg_match('/:[0-9]+$/', $host)) 
         $host = preg_replace('/:[0-9]+$/', '', $host); 
     $host = preg_replace("/[\<\>\'\"\\\'\\\"\%\=\(\)\/\^\*]/", '', $host); 
+
+    // Windows 로컬 환경에서 웹 루트에 junction을 사용하면 dirname(__FILE__)은
+    // 실제 대상 경로를 반환한다. 이 경로가 URL에 섞이지 않도록 SCRIPT_NAME에서
+    // 현재 PHP 파일의 상대 경로를 제거해 웹상의 루트 경로를 복원한다.
+    if (preg_match('/^[a-z]:\//i', $root)) {
+        $app_path = str_replace('\\', '/', realpath(dirname(__FILE__)));
+        $script_path = realpath($_SERVER['SCRIPT_FILENAME']);
+
+        if ($script_path !== false) {
+            $script_path = str_replace('\\', '/', $script_path);
+
+            if (strpos($script_path, $app_path.'/') === 0) {
+                $relative_script = substr($script_path, strlen($app_path));
+
+                if ($relative_script && substr($server_script_name, -strlen($relative_script)) === $relative_script) {
+                    $user = substr($server_script_name, 0, -strlen($relative_script));
+                    $root = '';
+                }
+            }
+        }
+    }
+
     $result['url'] = $http.$host.$port.$user.$root; 
     return $result;
 }
