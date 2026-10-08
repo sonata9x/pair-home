@@ -5129,29 +5129,32 @@ li.notification-icon {
 /* ===== 통합 위젯 툴바 ===== */
 .widget-toolbar {
     position: fixed;
-    bottom: 4%;
-    left: 1%;
+    top: 18px;
+    right: 16px;
+    bottom: auto;
+    left: auto;
     z-index: 99990;
     display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    gap: 10px;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
 }
 
 .widget-toolbar-toggle {
-    width: 35px;
-    height: 35px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
     border: none;
-    border-radius: 8px;
-    background: var(--btn-primary-bg, #64748b);
-    color: var(--btn-primary-text, #fff);
+    border-radius: 0;
+    background: transparent;
+    color: var(--btn-secondary-text, #64748b);
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: none;
     transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: calc(var(--content-font-size) * 1.2);
+    font-size: 12px;
 }
 
 .widget-toolbar-toggle:hover {
@@ -5160,7 +5163,8 @@ li.notification-icon {
 }
 
 .widget-toolbar-toggle.active {
-    background: var(--btn-accent-bg, #137bea);
+    background: transparent;
+    color: var(--btn-accent-bg, #137bea);
 }
 
 .widget-toolbar-menu {

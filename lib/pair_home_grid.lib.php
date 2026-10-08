@@ -4,13 +4,13 @@ include_once __DIR__.'/pair_home.lib.php';
 
 function pair_home_grid_default_layout() {
     return array(
-        array('id'=>'grid-profile','type'=>'profile','x'=>0,'y'=>3,'w'=>5,'h'=>13,'data'=>array('name'=>'우리의 프로필','handle'=>'@our_home','bio'=>'두 사람의 이야기를 소개해 주세요.','src'=>'','link'=>'','link_label'=>'더 보기')),
-        array('id'=>'grid-title','type'=>'text','x'=>5,'y'=>0,'w'=>25,'h'=>5,'data'=>array('text'=>'Our little home','font'=>'serif','font_size'=>46,'align'=>'center','color'=>'#657D8B','surface'=>'plain')),
-        array('id'=>'grid-banner','type'=>'image','x'=>5,'y'=>5,'w'=>25,'h'=>8,'data'=>array('src'=>'','alt'=>'둘만의 장면을 담아 주세요','shape'=>'rounded','radius'=>8)),
-        array('id'=>'grid-menu','type'=>'category','x'=>0,'y'=>0,'w'=>1,'h'=>3,'data'=>array('title'=>'PAGES','layout'=>'vertical','display'=>'icons','items'=>array(array('label'=>'PROFILE','url'=>'','icon'=>'user'),array('label'=>'DIARY','url'=>'','icon'=>'book'),array('label'=>'GALLERY','url'=>'','icon'=>'image')))),
-        array('id'=>'grid-note','type'=>'text','x'=>5,'y'=>13,'w'=>10,'h'=>10,'data'=>array('text'=>"우리의 작은 기록\n\n좋아하는 장면과\n함께한 시간을 모아두는 곳.",'font'=>'sans','font_size'=>18,'align'=>'center','line_height'=>1.8,'color'=>'#74828B')),
-        array('id'=>'grid-music','type'=>'bgm','x'=>15,'y'=>13,'w'=>15,'h'=>5,'data'=>array('title'=>'OUR PLAYLIST','artist'=>'','src'=>'','cover_src'=>'','player_style'=>'mini','loop'=>true,'volume'=>0.8)),
-        array('id'=>'grid-date','type'=>'dday','x'=>15,'y'=>18,'w'=>15,'h'=>5,'data'=>array('title'=>'함께 쌓아가는 날들','date'=>date('Y-m-d'),'mode'=>'since','style'=>'plain'))
+        array('id'=>'grid-profile','type'=>'profile','x'=>4,'y'=>3,'w'=>5,'h'=>13,'data'=>array('name'=>'우리의 프로필','handle'=>'@our_home','bio'=>'두 사람의 이야기를 소개해 주세요.','src'=>'','link'=>'','link_label'=>'더 보기')),
+        array('id'=>'grid-title','type'=>'text','x'=>9,'y'=>0,'w'=>18,'h'=>5,'data'=>array('text'=>'Our little home','font'=>'serif','font_size'=>46,'align'=>'center','color'=>'#657D8B','surface'=>'plain')),
+        array('id'=>'grid-banner','type'=>'image','x'=>9,'y'=>5,'w'=>18,'h'=>8,'data'=>array('src'=>'','alt'=>'둘만의 장면을 담아 주세요','shape'=>'rounded','radius'=>8)),
+        array('id'=>'grid-menu','type'=>'category','x'=>4,'y'=>0,'w'=>1,'h'=>3,'data'=>array('title'=>'PAGES','layout'=>'vertical','display'=>'icons','items'=>array(array('label'=>'PROFILE','url'=>'','icon'=>'user'),array('label'=>'GALLERY','url'=>'bbs/board.php?bo_table=gallery','icon'=>'image'),array('label'=>'LOG','url'=>'bbs/board.php?bo_table=log','icon'=>'book')))),
+        array('id'=>'grid-note','type'=>'text','x'=>9,'y'=>13,'w'=>8,'h'=>10,'data'=>array('text'=>"우리의 작은 기록\n\n좋아하는 장면과\n함께한 시간을 모아두는 곳.",'font'=>'sans','font_size'=>18,'align'=>'center','line_height'=>1.8,'color'=>'#74828B')),
+        array('id'=>'grid-music','type'=>'bgm','x'=>17,'y'=>13,'w'=>10,'h'=>5,'data'=>array('title'=>'OUR PLAYLIST','artist'=>'','src'=>'','cover_src'=>'','player_style'=>'mini','loop'=>true,'volume'=>0.8)),
+        array('id'=>'grid-date','type'=>'dday','x'=>17,'y'=>18,'w'=>10,'h'=>5,'data'=>array('title'=>'함께 쌓아가는 날들','date'=>date('Y-m-d'),'mode'=>'since','style'=>'plain'))
     );
 }
 

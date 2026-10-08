@@ -281,7 +281,7 @@ if (!$is_admin_page && (!isset($GLOBALS['widget_toolbar_loaded']) || !$GLOBALS['
 <?php if ($is_admin || $is_member || !empty($widget_toggle_btns)) { ?>
 <div id="widget-toolbar" class="widget-toolbar">
     <button type="button" id="widget-toolbar-toggle" class="widget-toolbar-toggle" aria-label="위젯 메뉴">
-        <i class="fa-solid fa-grip"></i>
+        <i class="fa-solid fa-gear"></i>
     </button>
     <div id="widget-toolbar-menu" class="widget-toolbar-menu">
         <?php if ($is_admin) { ?>

@@ -7,6 +7,7 @@
   if(!bootstrap||!shell||!frame||!canvas)return;
   var config=JSON.parse(bootstrap.textContent||'{}');
   var grid=window.PairHomeGrid;if(!grid)return;
+  var editorToggle=document.getElementById('pair-editor-toggle');
   var state={editing:false,selectedId:null,backgroundColor:config.backgroundColor||'#F2ECE5',backgroundImage:config.backgroundImage||'',representativeColor:config.representativeColor||'#7FAFD1',defaultTheme:/^(flat|line|bold|soft|pixel|glass)$/.test(config.defaultTheme||'')?config.defaultTheme:'flat',widgets:Array.isArray(config.widgets)?config.widgets:[]};
   var interaction=null,activeUploadWidgetId=null,activeUploadField='src',activeAudioWidgetId=null,activeAudio=null,statusTimer=null,isSaving=false,isUploadingAudio=false;
   var savedState='';
@@ -57,7 +58,7 @@
     if(!candidate)return false;Object.assign(widget,candidate);return true;
   }
   function isDirty(){return serializeState()!==savedState;}
-  function updateDirtyUi(){if(!config.admin)return;var dirty=isDirty();var toggle=document.getElementById('pair-editor-toggle');var reset=document.getElementById('pair-reset');var saveButton=document.getElementById('pair-save');if(toggle){toggle.classList.toggle('is-dirty',dirty);toggle.textContent=state.editing?'꾸미기 종료'+(dirty?' · 미저장':''):'꾸미기'+(dirty?' · 미저장':'');}if(reset)reset.disabled=!dirty||isSaving;if(saveButton)saveButton.disabled=!dirty||isSaving;}
+  function updateDirtyUi(){if(!config.admin)return;var dirty=isDirty();var reset=document.getElementById('pair-reset');var saveButton=document.getElementById('pair-save');if(editorToggle){var label=(state.editing?'꾸미기 종료':'꾸미기')+(dirty?' · 미저장':'');editorToggle.classList.toggle('is-dirty',dirty);editorToggle.setAttribute('aria-label',label);editorToggle.title=label;var hiddenLabel=editorToggle.querySelector('.pair-editor-toggle-label');if(hiddenLabel)hiddenLabel.textContent=label;}if(reset)reset.disabled=!dirty||isSaving;if(saveButton)saveButton.disabled=!dirty||isSaving;}
   function markDirty(){updateDirtyUi();}
   function stopOtherAudio(nextAudio){
     canvas.querySelectorAll('audio').forEach(function(candidate){if(candidate!==nextAudio&&!candidate.paused)candidate.pause();});
@@ -191,10 +192,22 @@
     }
   }
   function addEmpty(content,label){var empty=document.createElement('div');empty.className='pair-empty';empty.textContent=label;content.appendChild(empty);}
+  function dockEditorToggle(){
+    if(!config.admin||!editorToggle)return;
+    var webframes=state.widgets.filter(function(widget){return widget.type==='webframe';}).sort(function(a,b){return a.y-b.y||a.x-b.x;});
+    var host=null;
+    if(webframes.length){
+      var webframeElement=Array.prototype.find.call(canvas.querySelectorAll('.pair-widget[data-type="webframe"]'),function(element){return element.dataset.id===webframes[0].id;});
+      host=webframeElement&&webframeElement.querySelector('.pair-webframe-toolbar');
+    }
+    canvas.querySelectorAll('.pair-webframe-toolbar.has-editor-toggle').forEach(function(toolbar){toolbar.classList.remove('has-editor-toggle');});
+    if(host){host.classList.add('has-editor-toggle');host.appendChild(editorToggle);editorToggle.classList.add('is-docked');}
+    else{frame.appendChild(editorToggle);editorToggle.classList.remove('is-docked');}
+  }
   function render(updatePanel){
     if(updatePanel===undefined)updatePanel=true;applyBackground();applyFrameTheme();stopOtherAudio(null);canvas.innerHTML='';
     state.widgets.forEach(function(widget){var el=document.createElement('div');el.className='pair-widget'+(state.selectedId===widget.id&&state.editing?' is-selected':'')+(widget.locked&&state.editing?' is-locked':'');el.dataset.id=widget.id;el.dataset.type=widget.type;el.tabIndex=state.editing?0:-1;el.setAttribute('aria-label',(widget.type==='sticker'?'스티커':'블록')+' · '+(widget.data.name||widget.data.title||widget.data.alt||widget.type));positionElement(el,widget);var content=document.createElement('div');renderContent(widget,content);applyCardTheme(widget,content);el.appendChild(content);if(state.editing&&!widget.locked){var handle=document.createElement('span');handle.className='pair-resize-handle';handle.setAttribute('aria-hidden','true');el.appendChild(handle);}if(state.editing&&widget.locked){var badge=document.createElement('span');badge.className='pair-lock-badge';badge.textContent='잠금';badge.setAttribute('aria-label','잠긴 위젯');el.appendChild(badge);}canvas.appendChild(el);});
-    refreshGeometry();
+    dockEditorToggle();refreshGeometry();
     if(updatePanel)renderProperties();
   }
   function positionElement(el,widget){
@@ -204,7 +217,7 @@
       el.style.left=geometry.x+'%';el.style.top=geometry.y+'%';el.style.width=geometry.w+'%';el.style.height=geometry.h+'%';
       el.style.zIndex=1000+clamp(Number(widget.z)||1,1,999);el.style.transform='rotate('+(Number(widget.rotation)||0)+'deg)';
     }else{
-      var box=grid.snap(widget),gap=rect.width<500?6:10;
+      var box=grid.snap(widget),gap=rect.width<500?2:6;canvas.style.setProperty('--pair-grid-gap',gap+'px');
       el.style.left=(box.x/grid.columns*rect.width+gap/2)+'px';el.style.top=(box.y/grid.rows*rect.height+gap/2)+'px';
       el.style.width=(box.w/grid.columns*rect.width-gap)+'px';el.style.height=(box.h/grid.rows*rect.height-gap)+'px';
       el.style.zIndex=clamp(Number(widget.z)||1,1,999);el.style.transform='none';
@@ -373,7 +386,7 @@
   state.widgets.forEach(function(widget){if(widget.type==='category')fitCategoryWidget(widget);});
   savedState=serializeState();
   if(config.admin){
-    document.getElementById('pair-editor-toggle').addEventListener('click',function(){state.editing=!state.editing;shell.classList.toggle('is-editing',state.editing);if(!state.editing)state.selectedId=null;render();updateDirtyUi();});
+    editorToggle.addEventListener('click',function(event){event.stopPropagation();state.editing=!state.editing;shell.classList.toggle('is-editing',state.editing);if(!state.editing)state.selectedId=null;render();updateDirtyUi();});
     document.querySelectorAll('[data-add]').forEach(function(button){button.addEventListener('click',function(){addWidget(button.dataset.add);});});
     document.getElementById('pair-background-open').addEventListener('click',openBackground);
     document.getElementById('pair-reset').addEventListener('click',restoreSaved);

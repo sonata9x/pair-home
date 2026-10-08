@@ -12,6 +12,38 @@ test('the 30 by 30 canvas keeps each grid cell physically square',()=>{
   assert.match(css,/\.pair-grid-frame\s*\{[^}]*aspect-ratio:\s*1\s*\/\s*1/s);
   assert.doesNotMatch(css,/\.pair-grid-frame\s*\{[^}]*aspect-ratio:\s*(?:5\s*\/\s*4|3\s*\/\s*4)/s);
 });
+test('the main frame keeps a usable minimum width and scrolls after margins collapse',()=>{
+  const css=fs.readFileSync(path.join(__dirname,'../css/pair-home-grid.css'),'utf8');
+  assert.match(css,/\.pair-grid-shell\s*\{[^}]*overflow-x:\s*auto[^}]*padding:\s*76px max\(0px, calc\(\(100% - 960px\) \/ 2\)\) 110px/s);
+  assert.match(css,/\.pair-grid-frame\s*\{[^}]*width:\s*clamp\(720px, 100%, 960px\)[^}]*min-width:\s*720px/s);
+});
+test('the editor toggle is an icon that docks into a web-frame toolbar',()=>{
+  const css=fs.readFileSync(path.join(__dirname,'../css/pair-home-grid.css'),'utf8');
+  const script=fs.readFileSync(path.join(__dirname,'../js/pair-home-grid.js'),'utf8');
+  const markup=fs.readFileSync(path.join(__dirname,'../main.php'),'utf8');
+  assert.match(markup,/id="pair-editor-toggle"[^>]*aria-label="꾸미기"[^>]*>[\s\S]*?<svg/);
+  assert.match(css,/\.pair-editor-toggle\.is-docked/);
+  assert.match(css,/\.pair-webframe-toolbar\.has-editor-toggle/);
+  assert.match(script,/function dockEditorToggle\(\)/);
+});
+test('the compact gear menu and pencil editor sit together at the upper right',()=>{
+  const shellMarkup=fs.readFileSync(path.join(__dirname,'../head.sub.php'),'utf8');
+  const globalCss=fs.readFileSync(path.join(__dirname,'../css/default.css.php'),'utf8');
+  const gridCss=fs.readFileSync(path.join(__dirname,'../css/pair-home-grid.css'),'utf8');
+  assert.match(shellMarkup,/id="widget-toolbar-toggle"[\s\S]*?fa-solid fa-gear/);
+  assert.match(globalCss,/\.widget-toolbar\s*\{[^}]*top:\s*18px;[^}]*right:\s*16px;[^}]*bottom:\s*auto;[^}]*left:\s*auto/s);
+  assert.match(globalCss,/\.widget-toolbar-toggle\s*\{[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*background:\s*transparent;[^}]*box-shadow:\s*none/s);
+  assert.match(gridCss,/\.pair-grid-shell \.pair-editor-toggle\s*\{[^}]*position:\s*fixed;[^}]*top:\s*18px;[^}]*right:\s*42px;[^}]*width:\s*20px;[^}]*height:\s*20px;[^}]*border:\s*0;[^}]*background:\s*transparent;[^}]*box-shadow:\s*none/s);
+});
+test('grid widgets may shrink to one real cell and keep matching internal gutters',()=>{
+  const css=fs.readFileSync(path.join(__dirname,'../css/pair-home-grid.css'),'utf8');
+  const script=fs.readFileSync(path.join(__dirname,'../js/pair-home-grid.js'),'utf8');
+  assert.match(css,/\.pair-grid-shell \.pair-widget\s*\{[^}]*min-width:\s*0;[^}]*min-height:\s*0/s);
+  assert.match(css,/container-type:\s*size/);
+  assert.match(css,/pair-category-list[^}]*gap:\s*var\(--pair-grid-gap,6px\)/s);
+  assert.match(css,/\.pair-category-bar\.display-icons button[^}]*min-width:\s*0;[^}]*min-height:\s*0/s);
+  assert.match(script,/gap=rect\.width<500\?2:6/);
+});
 test('movement snaps by whole cells and stays inside all four edges',()=>{
   const start={x:3,y:4,w:4,h:3};
   assert.deepEqual(grid.move(start,.49,-.49),start);

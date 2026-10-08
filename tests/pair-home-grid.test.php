@@ -4,6 +4,10 @@ function clean_xss_tags($value,$unused=0,$unused2=0) { return strip_tags($value)
 require __DIR__.'/../lib/pair_home_grid.lib.php';
 function check_grid($value,$message) { if (!$value) throw new RuntimeException($message); }
 $defaults = pair_home_grid_sanitize_layout(pair_home_grid_default_layout());
+check_grid($defaults[3]['data']['layout'] === 'vertical' && $defaults[3]['w'] === 1 && $defaults[3]['h'] === 3,'default category is a vertical 1x3 icon column');
+$default_left = min(array_map(function($widget){ return $widget['type'] === 'sticker' ? 30 : $widget['x']; },$defaults));
+$default_right = max(array_map(function($widget){ return $widget['type'] === 'sticker' ? 0 : $widget['x']+$widget['w']; },$defaults));
+check_grid($default_left === 4 && $default_right === 27,'default 23-column content is centered inside the 30-column canvas');
 check_grid(count($defaults) === 7,'all starter blocks survive validation');
 check_grid(pair_home_grid_layout_error($defaults) === '','starter blocks must not overlap');
 check_grid($defaults[0]['type'] === 'profile','profile preserved');

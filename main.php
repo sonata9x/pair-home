@@ -82,7 +82,10 @@ $pair_bootstrap = array(
         <div class="pair-home-canvas" id="pair-home-canvas" aria-label="페어홈 메인 · 30열 격자"></div>
     </section>
     <?php if ($is_admin) { ?>
-    <button type="button" class="pair-editor-toggle" id="pair-editor-toggle">꾸미기</button>
+    <button type="button" class="pair-editor-toggle" id="pair-editor-toggle" aria-label="꾸미기" title="꾸미기">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4l11-11a2.8 2.8 0 0 0-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4M4 20l3-1-2-2-1 3Z"/></svg>
+        <span class="pair-editor-toggle-label">꾸미기</span>
+    </button>
     <div class="pair-editor-bar" id="pair-editor-bar" aria-label="위젯 추가 도구">
         <button type="button" data-add="profile">프로필</button>
         <button type="button" data-add="image">이미지 프레임</button>
